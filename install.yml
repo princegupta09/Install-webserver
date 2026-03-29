@@ -1,7 +1,7 @@
 
 ---
 - name: Install and configure Apache Web Server
-  hosts: all
+  hosts: 192.168.101.6
   become: yes
 
   tasks:
