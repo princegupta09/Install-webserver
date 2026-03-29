@@ -1,0 +1,49 @@
+
+---
+- name: Install and configure Apache Web Server
+  hosts: webservers
+  become: yes
+
+  tasks:
+
+    - name: Install Apache package
+      package:
+        name:
+          - httpd        # For RHEL/CentOS/Rocky
+        state: present
+      when: ansible_os_family == "RedHat"
+
+    - name: Install Apache2 (Debian/Ubuntu)
+      package:
+        name:
+          - apache2
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Ensure Apache service is enabled and started (RHEL)
+      service:
+        name: httpd
+        enabled: yes
+        state: started
+      when: ansible_os_family == "RedHat"
+
+    - name: Ensure Apache2 service is enabled and started (Debian)
+      service:
+        name: apache2
+        enabled: yes
+        state: started
+      when: ansible_os_family == "Debian"
+
+    - name: Deploy custom index.html
+      copy:
+        dest: /var/www/html/index.html
+        content: |
+          <h1>Welcome to your Ansible-managed Web Server!</h1>
+          <p>Server: {{ inventory_hostname }}</p>
+      notify: restart apache
+
+  handlers:
+    - name: restart apache
+      service:
+        name: "{{ 'httpd' if ansible_os_family == 'RedHat' else 'apache2' }}"
+        state: restarted
