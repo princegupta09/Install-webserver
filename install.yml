@@ -1,7 +1,7 @@
 
 ---
 - name: Install and configure Apache Web Server
-  hosts: 192.168.101.6
+  hosts: 52.88.28.36
   become: yes
 
   tasks:
