@@ -38,7 +38,7 @@
       copy:
         dest: /var/www/html/index.html
         content: |
-          <h1>Welcome to your Ansible-managed Web Server!</h1>
+          <h1>Welcome to your Ansible-managed Web Server by Prince!</h1>
           <p>Server: {{ inventory_hostname }}</p>
       notify: restart apache
 
